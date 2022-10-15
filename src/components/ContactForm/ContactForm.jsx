@@ -1,5 +1,6 @@
 import React from 'react';
-
+import PropTypes from 'prop-types';
+import s from './ContactForm.module.css';
 class ContactForm extends React.Component {
   state = {
     name: '',
@@ -15,42 +16,47 @@ class ContactForm extends React.Component {
   handleSubmit = e => {
     e.preventDefault();
 
-    this.props.onSubmit(this.state);
+    this.props.onSubmit({ ...this.state });
 
     this.setState({ name: '', number: '' });
   };
   render() {
-    const {number } = this.state;
+    const { name, number } = this.state;
     return (
-      <form onSubmit={this.handleSubmit}>
-        <label>
+      <form className={s.form} onSubmit={this.handleSubmit}>
+        <label className={s.contact_label}>
           Name:
           <input
+            className={s.contact_input}
             type="text"
             name="name"
             pattern="^[a-zA-Zа-яА-Я]+(([' -][a-zA-Zа-яА-Я ])?[a-zA-Zа-яА-Я]*)*$"
             title="Name may contain only letters, apostrophe, dash and spaces. For example Adrian, Jacob Mercer, Charles de Batz de Castelmore d'Artagnan"
             required
-            value={this.state.value}
+            value={name}
             onChange={this.handleChange}
           />
         </label>
-        <label>
+        <label className={s.contact_label}>
           Number
           <input
+            className={s.contact_input}
             type="text"
             name="number"
             value={number}
             onChange={this.handleChange}
-            placeholder="111-11-11"
           />
         </label>
-        <button type="submit" value="Submit">
+        <button className={s.contact_button} type="submit">
           add contact
         </button>
       </form>
     );
   }
 }
+
+ContactForm.propTypes = {
+  onSubmit: PropTypes.func.isRequired,
+};
 
 export default ContactForm;
